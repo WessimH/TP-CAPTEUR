@@ -14,8 +14,6 @@ byte mac[] = {0xA8, 0x61, 0x0A, 0xAE, 0x88, 0x60};
 IPAddress ip(192, 168, 0, 70);
 IPAddress gateway(192, 168, 0, 10);
 IPAddress subnet(255, 255, 255, 0);
-int temperature = dht.readTemperature()*100;
-
 
 void setup()
 {
@@ -39,7 +37,7 @@ void setup()
 
   // Fill MbData
 //  Mb.SetBit(0,false);
-  Mb.MbData[0] = temperature;
+  Mb.MbData[0] = round(dht.readTemperature()*100);
   Mb.MbData[1] = 0;
   Mb.MbData[2] = 0;
   Mb.MbData[3] = 0;
@@ -51,7 +49,6 @@ void setup()
   Mb.MbData[9] = 0;
   Mb.MbData[10] = 0;
   Mb.MbData[11] = 0;
-
   afficheData();  
 }
 
@@ -61,11 +58,13 @@ void loop()
     // get incoming byte:
     inByte = Serial.read();
   }
-serial.printIn(temperature);
 //  Mb.MbmRun();
+  Mb.MbData[0] = round(dht.readTemperature()*100);
   Mb.MbsRun();
 }
-
+int dataT(mult) {
+    return round(dht.readTemperature()*100);
+} 
 void afficheData()
 {
   // print MbData
